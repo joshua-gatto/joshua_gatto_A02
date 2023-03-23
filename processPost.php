@@ -12,8 +12,25 @@ if(isset($_POST["submit"])){
         echo "Error";
         die("Connection failed: " . $conn->connect_error);
     }else{
-        echo 'Error persisting user data, Error Code 2' . $conn->connect_error;
         $conn->close();
+        $text = mysqli_real_escape_string($conn, $_POST['text']);
+
+        $postQuery = "INSERT INTO user_posts(student_ID, new_post) VALUES (0, '$text');";
+        if(mysqli_query($conn, $postQuery)){
+            //print results
+            echo 
+            "<!DOCTYPE html>
+            <html lang='en'>
+            <head>
+            <meta charset='utf-8'>
+                <title>Register on SYSCBOOK</title>
+                <link rel='stylesheet' href='assets/css/reset.css'>
+                <link rel='stylesheet' href='assets/css/style.css'>
+            </head>
+            <body><p>Done!</p></body>";
+        }else{
+            
+        }
     }
 }
 ?>

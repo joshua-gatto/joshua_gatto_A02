@@ -42,7 +42,7 @@
                         </legend>
                         <table id="newPost">
                            <tr>
-                              <td colspan="2"><textarea rows="4" cols="45" maxlength="500" placeholder="What's on your mind? (max 500 char)"></textarea></td>
+                              <td colspan="2"><textarea rows="4" cols="45" maxlength="500" placeholder="What's on your mind? (max 500 char)" name="text"></textarea></td>
                            </tr>
                            <tr>
                               <td><button type="submit" method="post">Post</button></td>
