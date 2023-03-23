@@ -31,16 +31,6 @@ if(isset($_POST["submit"])){
             //submit remaining queries
             if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
                 //print results
-                echo 
-                "<!DOCTYPE html>
-                <html lang='en'>
-                <head>
-                <meta charset='utf-8'>
-                    <title>Register on SYSCBOOK</title>
-                    <link rel='stylesheet' href='assets/css/reset.css'>
-                    <link rel='stylesheet' href='assets/css/style.css'>
-                </head>
-                <body><p>Done!</p></body>";
             }else{
                 echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
             }
