@@ -1,7 +1,5 @@
 <?php
-echo'0';
 if(isset($_POST["submit"])){
-    echo'1';
     include("connection.php");
 
     define("DATABASE_LOCAL", "localhost");
@@ -14,7 +12,6 @@ if(isset($_POST["submit"])){
         echo "Error";
         die("Connection failed: " . $conn->connect_error);
     }else{
-        echo'2';
         //personal information
         $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
         $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);

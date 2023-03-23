@@ -35,7 +35,7 @@
                   </nav>
                </td>
                <td>
-                  <form method="post" action="https://ramisabouni.com/sysc4504/process_index.php">
+                  <form method="post" action="./processPost.php">
                      <fieldset>
                         <legend>
                            <p>New Post</p>
