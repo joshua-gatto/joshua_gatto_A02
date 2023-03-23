@@ -37,3 +37,10 @@ CREATE TABLE IF NOT EXISTS users_posts (
     post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_ID) REFERENCES users_info(student_ID)
 );
+
+--delete all script
+TRUNCATE TABLE users_program;
+TRUNCATE TABLE users_avatar;
+TRUNCATE TABLE users_address;
+TRUNCATE TABLE users_posts;
+TRUNCATE TABLE users_info;
