@@ -29,7 +29,7 @@ if(isset($_POST["submit"])){
             $addressQuery = "INSERT INTO users_address(student_ID, street_number, street_name, city, provence, postal_code) VALUES ('$student_ID', 0, NULL, NULL, NULL, NULL);";
             $avatarQuery = "INSERT INTO users_avatar(student_ID, avatar) VALUES('$student_ID', NULL);";
             //submit remaining queries
-            if(mysqli_query($conn, $programQuery) === TRUE and (mysqli_query($conn, $addressQuery) === TRUE and mysqli_real_escape_string($conn, $avatarQuery) === TRUE)){
+            if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
                 //print results
                 echo 
                 "<!DOCTYPE html>
@@ -40,12 +40,12 @@ if(isset($_POST["submit"])){
                     <link rel='stylesheet' href='assets/css/reset.css'>
                     <link rel='stylesheet' href='assets/css/style.css'>
                 </head>
-                <body><p>Done!</p>'</body>";
+                <body><p>Done!</p></body>";
             }else{
-                echo 'Error persisting user data';
+                echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
             }
         }else{
-            echo 'Error persisting user data';
+            echo 'Error persisting user data, Error Code 2' . $conn->connect_error;
         }
     $conn->close();
     }
