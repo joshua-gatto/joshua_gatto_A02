@@ -85,7 +85,7 @@
                            </tr>
                            <tr>
                               <td>
-                                 <td class="buttons"><button type='submit' name='submit' value='submit' formaction='./submitProfile.php'>Submit</button></td>
+                                 <td class="buttons"><button type='submit' name='submit' value='submit' formaction='./processRegister.php'>Submit</button></td>
                                  <td class="buttons"><button type="reset" formaction="reset.css">Reset</button></td>
                               </td>
                            </tr>
