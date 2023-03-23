@@ -34,7 +34,7 @@ if(isset($_POST["submit"])){
                 echo 
                 "<!DOCTYPE html>
                 <html lang='en'>
-                <head >
+                <head>
                 <meta charset='utf-8'>
                     <title>Register on SYSCBOOK</title>
                     <link rel='stylesheet' href='assets/css/reset.css'>
