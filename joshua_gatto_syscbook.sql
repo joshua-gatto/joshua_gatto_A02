@@ -1,12 +1,12 @@
 CREATE DATABASE IF NOT EXISTS joshua_gatto_syscbook;
 
 CREATE TABLE IF NOT EXISTS users_info (
-    student_ID INT(10) AUTO_INCREMENT PRIMARY KEY,
+    student_ID INT(10) PRIMARY KEY AUTO_INCREMENT,
     student_email VARCHAR(150),
     first_name VARCHAR(150),
     last_name VARCHAR(150),
     DOB DATE
-)AUTO_INCREMENT=100100;
+);
 
 CREATE TABLE IF NOT EXISTS users_program (
     student_ID INT(10) PRIMARY KEY,

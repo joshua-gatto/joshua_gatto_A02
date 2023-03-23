@@ -92,14 +92,14 @@
                            <tr>
                               <td>
                                  <label>Program </label>
-                                 <select name="Program">
+                                 <select name='program'>
                                     <option selected>Choose Program</option>
-                                    <option>Computer Systems Engineering</option>
-                                    <option>Software Engineering</option>
-                                    <option>Communications Engineering</option>
-                                    <option>Biomedical and Electrical Engineering</option>
-                                    <option>Electrical Engineering</option>
-                                    <option>Special</option>
+                                    <option value="Computer Systems Engineering">Computer Systems Engineering</option>
+                                    <option value="Software Engineering">Software Engineering</option>
+                                    <option value="Communications Engineering">Communications Engineering</option>
+                                    <option value="Biomedical and Electrical Engineering">Biomedical and Electrical Engineering</option>
+                                    <option value="Electrical Engineering">Electrical Engineering</option>
+                                    <option value="Other">Special</option>
                                  </select>
                               </td>
                            </tr>
@@ -110,21 +110,21 @@
                            </tr>
                            <tr>
                               <td>
-                                 <input type="radio" name="avatar" class="avatarSelect">
+                                 <input type="radio" name="avatar" class="avatarSelect" value='A'>
                                  <img class="pfp" src="./images/img_avatar1.png" alt="Avatar 1">
-                                 <input type="radio" name="avatar" class="avatarSelect">
+                                 <input type="radio" name="avatar" class="avatarSelect" value='B'>
                                  <img class="pfp" src="./images/img_avatar2.png" alt="Avatar 2">
-                                 <input type="radio" name="avatar" class="avatarSelect">
+                                 <input type="radio" name="avatar" class="avatarSelect" value='C'>
                                  <img class="pfp" src="./images/img_avatar3.png" alt="Avatar 3">
-                                 <input type="radio" name="avatar" class="avatarSelect">
+                                 <input type="radio" name="avatar" class="avatarSelect" value='D'>
                                  <img class="pfp" src="./images/img_avatar4.png" alt="Avatar 4">
-                                 <input type="radio" name="avatar" class="avatarSelect">
+                                 <input type="radio" name="avatar" class="avatarSelect" value='E'>
                                  <img class="pfp" src="./images/img_avatar5.png" alt="Avatar 5">
                               </td>
                            </tr>
                            <tr>
                               <td>
-                                 <td class="buttons"><button type="submit" formmethod="post" formaction="https://ramisabouni.com/sysc4504/process_profile.php">Submit</button></td>
+                                 <td class="buttons"><button type='submit' name='submit' value='submit' formmethod='post' formaction='./processProfile.php'>Submit</button></td>
                                  <td class="buttons"><button type="reset" formaction="reset.css">Reset</button></td>
                               </td>
                            </tr>
