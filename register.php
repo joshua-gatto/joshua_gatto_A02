@@ -30,7 +30,7 @@
                            <td><li><a href="#">Register</a></li></td>
                         </tr>
                         <tr>
-                           <td><li><a href="#">Log Out</a></li></td>
+                           <td><li><a href="logOut.php">Log Out</a></li></td>
                         </tr>
                      
                      </ul>
@@ -40,7 +40,7 @@
             <td>
                <section>
                   <h2>Register a new profile</h2>
-                  <form formaction="./submitProfile.php" method="post">
+                  <form formaction="" method="post">
                      <fieldset>
                         <legend><p>Personal information</p></legend>
                         <table>

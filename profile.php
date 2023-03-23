@@ -5,6 +5,9 @@
    <title>Update SYSCBOOK profile</title>
    <link rel="stylesheet" href="assets/css/reset.css" />
    <link rel="stylesheet" href="assets/css/style.css" />
+   <?php
+   session_start();
+   ?>
 </head>
 <body>
    <header>
@@ -28,7 +31,7 @@
                            <td><li><a href="./register.php">Register</a></li></td>
                         </tr>
                         <tr>
-                           <td><li><a href="#">Log Out</a></li></td>
+                           <td><li><a href="logOut.php">Log Out</a></li></td>
                         </tr>
                      </table>
                   </ul>
@@ -133,6 +136,9 @@
                   </form>
                   <?php
                   if(isset($_POST["submit"])){
+                     if(isset($_SESSION["user"])){
+                        echo $_SESSION["user"]["student_ID"];
+                     }
                      include("connection.php");
 
                      define("DATABASE_LOCAL", "localhost");
@@ -172,6 +178,23 @@
                               //submit remaining queries
                               if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
                                  //print results
+                                 if(!isset($_SESSION["user"])){
+                                    $_SESSION["user"] = 
+                                    array(
+                                       "student_ID" => $student_ID,
+                                       "student_email" => $email,
+                                       "first_name" => $first_name,
+                                       "last_name" => $last_name,
+                                       "DOB" => $dob,
+                                       "program" => $program,
+                                       "street_num" => $street_num,
+                                       "street_name" => $street_name,
+                                       "city" => $city,
+                                       "provence" => $provence,
+                                       "postal_code" => $postal_code,
+                                       "avatar" => $avatar,
+                                    );
+                                 }
                               }else{
                                  echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
                               }

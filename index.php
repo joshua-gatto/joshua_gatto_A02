@@ -28,14 +28,14 @@
                               <td><li><a href="./register.php">Register</a></li></td>
                            </tr>
                            <tr>
-                              <td><li><a href="#">Log Out</a></li></td>
+                              <td><li><a href="./logOut.php">Log Out</a></li></td>
                            </tr>
                         </table>
                      </ul>
                   </nav>
                </td>
                <td>
-                  <form method="post" action="./processPost.php">
+                  <form method="post" action="">
                      <fieldset>
                         <legend>
                            <p>New Post</p>
@@ -65,12 +65,16 @@
                         echo "Error";
                         die("Connection failed: " . $conn->connect_error);
                      }else{
-                        $text = mysqli_real_escape_string($conn, $_POST['text']);
-                        $postQuery = "INSERT INTO users_posts(student_ID, new_post) VALUES (0, '$text');";
-                        if(mysqli_query($conn, $postQuery)){
-                              //print results
-                        }else{
-                           echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
+                        if(isset($_SESSION["user"])){
+                           $student_ID = $_SESSION["user"]["student_ID"];
+                           echo $student_ID;
+                           $text = mysqli_real_escape_string($conn, $_POST['text']);
+                           $postQuery = "INSERT INTO users_posts(student_ID, new_post) VALUES ('', '$text');";
+                           if(mysqli_query($conn, $postQuery)){
+                                 //print results
+                           }else{
+                              echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
+                           }
                         }
                         $conn->close();
                      }
