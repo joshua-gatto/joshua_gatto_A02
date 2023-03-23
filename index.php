@@ -45,12 +45,37 @@
                               <td colspan="2"><textarea rows="4" cols="45" maxlength="500" placeholder="What's on your mind? (max 500 char)" name="text"></textarea></td>
                            </tr>
                            <tr>
-                              <td><button type="submit" method="post">Post</button></td>
+                              <td><button type="submit" name="submit" method="post" formaction=''>Post</button></td>
                               <td><button type="reset" formaction="reset.css">Reset</button></td>
                            </tr>
                         </table>
                      </fieldset>
                   </form>
+                  <?php
+                  if(isset($_POST["submit"])){
+                     include("connection.php");
+
+                     define("DATABASE_LOCAL", "localhost");
+                     define("DATABASE_NAME", "joshua_gatto_syscbook");
+                     define("DATABASE_USER", "root");
+                     define("DATABASE_PASSWD", "");
+
+                     $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
+                     if ($conn->connect_error) {
+                        echo "Error";
+                        die("Connection failed: " . $conn->connect_error);
+                     }else{
+                        $text = mysqli_real_escape_string($conn, $_POST['text']);
+                        $postQuery = "INSERT INTO users_posts(student_ID, new_post) VALUES (0, '$text');";
+                        if(mysqli_query($conn, $postQuery)){
+                              //print results
+                        }else{
+                           echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
+                        }
+                        $conn->close();
+                     }
+                  }
+                  ?>
                </td>
             </tr>
             <tr class="posts">
