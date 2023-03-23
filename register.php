@@ -72,20 +72,20 @@
                            <tr>
                               <td>
                                  <label>Program </label>
-                                 <select name="Program">
+                                 <select name='program'>
                                     <option selected>Choose Program</option>
-                                    <option>Computer Systems Engineering</option>
-                                    <option>Software Engineering</option>
-                                    <option>Communications Engineering</option>
-                                    <option>Biomedical and Electrical Engineering</option>
-                                    <option>Electrical Engineering</option>
-                                    <option>Special</option>
+                                    <option value="Computer Systems Engineering">Computer Systems Engineering</option>
+                                    <option value="Software Engineering">Software Engineering</option>
+                                    <option value="Communications Engineering">Communications Engineering</option>
+                                    <option value="Biomedical and Electrical Engineering">Biomedical and Electrical Engineering</option>
+                                    <option value="Electrical Engineering">Electrical Engineering</option>
+                                    <option value="Other">Special</option>
                                  </select>
                               </td>
                            </tr>
                            <tr>
                               <td>
-                                 <td class="buttons"><button type='submit' name='submit' value='submit'>Submit</button></td>
+                                 <td class="buttons"><button type='submit' name='submit' value='submit' formaction='./submitProfile.php'>Submit</button></td>
                                  <td class="buttons"><button type="reset" formaction="reset.css">Reset</button></td>
                               </td>
                            </tr>
