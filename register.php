@@ -125,6 +125,21 @@
                               //submit remaining queries
                               if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
                                  //print results
+                                 $_SESSION["user"] = 
+                                 array(
+                                    "student_ID" => $student_ID,
+                                    "student_email" => $email,
+                                    "first_name" => $first_name,
+                                    "last_name" => $last_name,
+                                    "DOB" => $dob,
+                                    "program" => NULL,
+                                    "street_num" => 0,
+                                    "street_name" => NULL,
+                                    "city" => NULL,
+                                    "provence" => NULL,
+                                    "postal_code" => NULL,
+                                    "avatar" => NULL,
+                                 );
                               }else{
                                  echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
                               }

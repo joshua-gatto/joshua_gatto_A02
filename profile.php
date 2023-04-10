@@ -113,15 +113,15 @@
                            </tr>
                            <tr>
                               <td>
-                                 <input type="radio" name="avatar" class="avatarSelect" value='A' <?php if($_SESSION["user"]["avatar"] == 'A') echo 'selected'?>>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='A' <?php if($_SESSION["user"]["avatar"] == 'A') echo 'checked'?>>
                                  <img class="pfp" src="./images/img_avatar1.png" alt="Avatar 1">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='B' <?php if($_SESSION["user"]["avatar"] == 'B') echo 'selected'?>>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='B' <?php if($_SESSION["user"]["avatar"] == 'B') echo 'checked'?>>
                                  <img class="pfp" src="./images/img_avatar2.png" alt="Avatar 2">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='C' <?php if($_SESSION["user"]["avatar"] == 'C') echo 'selected'?>>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='C' <?php if($_SESSION["user"]["avatar"] == 'C') echo 'checked'?>>
                                  <img class="pfp" src="./images/img_avatar3.png" alt="Avatar 3">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='D' <?php if($_SESSION["user"]["avatar"] == 'D') echo 'selected'?>>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='D' <?php if($_SESSION["user"]["avatar"] == 'D') echo 'checked'?>>
                                  <img class="pfp" src="./images/img_avatar4.png" alt="Avatar 4">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='E' <?php if($_SESSION["user"]["avatar"] == 'E') echo 'selected'?>>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='E' <?php if($_SESSION["user"]["avatar"] == 'E') echo 'checked'?>>
                                  <img class="pfp" src="./images/img_avatar5.png" alt="Avatar 5">
                               </td>
                            </tr>
