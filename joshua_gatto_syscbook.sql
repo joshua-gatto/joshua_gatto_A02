@@ -39,8 +39,12 @@ CREATE TABLE IF NOT EXISTS users_posts (
 );
 
 --delete all script
+SET FOREIGN_KEY_CHECKS = 0;
+
 TRUNCATE TABLE users_program;
 TRUNCATE TABLE users_avatar;
 TRUNCATE TABLE users_address;
 TRUNCATE TABLE users_posts;
 TRUNCATE TABLE users_info;
+
+SET FOREIGN_KEY_CHECKS = 1;
