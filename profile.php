@@ -47,15 +47,15 @@
                            <tr>
                               <td>
                                  <label>First Name: </label>
-                                 <input type="text" name="first_name"></input>
+                                 <input type="text" name="first_name" value="<?php echo $_SESSION["user"]["first_name"]; ?>"></input>
                               </td>
                               <td>
                                  <label>Last Name: </label>
-                                 <input type="text" name="last_name"></input>
+                                 <input type="text" name="last_name" value="<?php echo $_SESSION["user"]["last_name"]; ?>"></input>
                               </td>
                               <td>
                                  <label>DOB: </label>
-                                 <input type="date" name="DOB"></input>
+                                 <input type="date" name="DOB" value="<?php echo $_SESSION["user"]["DOB"]; ?>"></input>
                               </td>
                            </tr>
                         </table>
@@ -66,21 +66,21 @@
                            <tr>
                               <td>
                                  <label>Street Number: </label>
-                                 <input type="number" name="street_number">
+                                 <input type="number" name="street_number" value="<?php echo $_SESSION["user"]["street_num"]; ?>">
                               </td>
                               <td>
                                  <label>Street Name: </label>
-                                 <input type="text" name="street_name">
+                                 <input type="text" name="street_name" value="<?php echo $_SESSION["user"]["street_name"]; ?>">
                               </td>
                               <td>
                                  <label>City: </label>
-                                 <input type="text" name="city">
+                                 <input type="text" name="city" value="<?php echo $_SESSION["user"]["city"]; ?>">
                               </td>
                            </tr>
                            <label>Province: </label>
-                           <input type="text" name="provence">
+                           <input type="text" name="provence" value="<?php echo $_SESSION["user"]["provence"]; ?>">
                            <label>Postal Code: </label>
-                           <input type="text" name="postal_code">
+                           <input type="text" name="postal_code" value="<?php echo $_SESSION["user"]["postal_code"]; ?>">
                         </table>
                      </fieldset>
                      <fieldset>
@@ -89,20 +89,20 @@
                            <tr>
                               <td>
                                  <label>Email Address: </label>
-                                 <input type="email" name="student_email">
+                                 <input type="email" name="student_email" value="<?php echo $_SESSION["user"]["student_email"]; ?>">
                               </td>
                            </tr>
                            <tr>
                               <td>
                                  <label>Program </label>
                                  <select name='program'>
-                                    <option selected>Choose Program</option>
-                                    <option value="Computer Systems Engineering">Computer Systems Engineering</option>
-                                    <option value="Software Engineering">Software Engineering</option>
-                                    <option value="Communications Engineering">Communications Engineering</option>
-                                    <option value="Biomedical and Electrical Engineering">Biomedical and Electrical Engineering</option>
-                                    <option value="Electrical Engineering">Electrical Engineering</option>
-                                    <option value="Other">Special</option>
+                                    <option <?php if(!isset($_SESSION["user"]["program"])) echo 'selected'; ?>>Choose Program</option>
+                                    <option value="Computer Systems Engineering" <?php if($_SESSION["user"]["program"] == 'Computer Systems Engineering') echo 'selected'?>>Computer Systems Engineering</option>
+                                    <option value="Software Engineering" <?php if($_SESSION["user"]["program"] == 'Software Engineering') echo 'selected'?>>Software Engineering</option>
+                                    <option value="Communications Engineering" <?php if($_SESSION["user"]["program"] == 'Communications Engineering') echo 'selected'?>>Communications Engineering</option>
+                                    <option value="Biomedical and Electrical Engineering" <?php if($_SESSION["user"]["program"] == 'Biomedical and Electrical Engineering') echo 'selected'?>>Biomedical and Electrical Engineering</option>
+                                    <option value="Electrical Engineering" <?php if($_SESSION["user"]["program"] == 'Electrical Engineering') echo 'selected'?>>Electrical Engineering</option>
+                                    <option value="Other" <?php if($_SESSION["user"]["program"] == 'Other') echo 'selected'?>>Special</option>
                                  </select>
                               </td>
                            </tr>
@@ -113,15 +113,15 @@
                            </tr>
                            <tr>
                               <td>
-                                 <input type="radio" name="avatar" class="avatarSelect" value='A'>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='A' <?php if($_SESSION["user"]["avatar"] == 'A') echo 'selected'?>>
                                  <img class="pfp" src="./images/img_avatar1.png" alt="Avatar 1">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='B'>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='B' <?php if($_SESSION["user"]["avatar"] == 'B') echo 'selected'?>>
                                  <img class="pfp" src="./images/img_avatar2.png" alt="Avatar 2">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='C'>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='C' <?php if($_SESSION["user"]["avatar"] == 'C') echo 'selected'?>>
                                  <img class="pfp" src="./images/img_avatar3.png" alt="Avatar 3">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='D'>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='D' <?php if($_SESSION["user"]["avatar"] == 'D') echo 'selected'?>>
                                  <img class="pfp" src="./images/img_avatar4.png" alt="Avatar 4">
-                                 <input type="radio" name="avatar" class="avatarSelect" value='E'>
+                                 <input type="radio" name="avatar" class="avatarSelect" value='E' <?php if($_SESSION["user"]["avatar"] == 'E') echo 'selected'?>>
                                  <img class="pfp" src="./images/img_avatar5.png" alt="Avatar 5">
                               </td>
                            </tr>
@@ -136,9 +136,6 @@
                   </form>
                   <?php
                   if(isset($_POST["submit"])){
-                     if(isset($_SESSION["user"])){
-                        echo $_SESSION["user"]["student_ID"];
-                     }
                      include("connection.php");
 
                      define("DATABASE_LOCAL", "localhost");
@@ -178,23 +175,21 @@
                               //submit remaining queries
                               if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
                                  //print results
-                                 if(!isset($_SESSION["user"])){
-                                    $_SESSION["user"] = 
-                                    array(
-                                       "student_ID" => $student_ID,
-                                       "student_email" => $email,
-                                       "first_name" => $first_name,
-                                       "last_name" => $last_name,
-                                       "DOB" => $dob,
-                                       "program" => $program,
-                                       "street_num" => $street_num,
-                                       "street_name" => $street_name,
-                                       "city" => $city,
-                                       "provence" => $provence,
-                                       "postal_code" => $postal_code,
-                                       "avatar" => $avatar,
-                                    );
-                                 }
+                                 $_SESSION["user"] = 
+                                 array(
+                                    "student_ID" => $student_ID,
+                                    "student_email" => $email,
+                                    "first_name" => $first_name,
+                                    "last_name" => $last_name,
+                                    "DOB" => $dob,
+                                    "program" => $program,
+                                    "street_num" => $street_num,
+                                    "street_name" => $street_name,
+                                    "city" => $city,
+                                    "provence" => $provence,
+                                    "postal_code" => $postal_code,
+                                    "avatar" => $avatar,
+                                 );
                               }else{
                                  echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
                               }
