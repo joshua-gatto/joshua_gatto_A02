@@ -39,6 +39,12 @@ CREATE TABLE IF NOT EXISTS users_posts (
     FOREIGN KEY (student_ID) REFERENCES users_info(student_ID)
 );
 
+CREATE TABLE IF NOT EXISTS users_session (
+    student_ID INT(10) PRIMARY KEY,
+    session_ID INT,
+    FOREIGN KEY (student_ID) REFERENCES users_info(student_ID)
+);
+
 --delete all script
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -46,6 +52,7 @@ TRUNCATE TABLE users_program;
 TRUNCATE TABLE users_avatar;
 TRUNCATE TABLE users_address;
 TRUNCATE TABLE users_posts;
+TRUNCATE TABLE users_session;
 TRUNCATE TABLE users_info;
 
 SET FOREIGN_KEY_CHECKS = 1;

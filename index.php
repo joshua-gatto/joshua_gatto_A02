@@ -5,6 +5,75 @@
       <title>SYSCBOOK - Main</title>
       <link rel="stylesheet" href="assets/css/reset.css" />
       <link rel="stylesheet" href="assets/css/style.css" />
+      <?php
+         if(isset($_POST["post_submit"]) && isset($_COOKIE["session_ID"])){
+            include("connection.php");
+
+            define("DATABASE_LOCAL", "localhost");
+            define("DATABASE_NAME", "joshua_gatto_syscbook");
+            define("DATABASE_USER", "root");
+            define("DATABASE_PASSWD", "");
+
+            $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
+            if ($conn->connect_error) {
+               echo "Error";
+               die("Connection failed: " . $conn->connect_error);
+            }else{       
+               $session_query = "SELECT student_ID, session_ID FROM users_session WHERE session_ID='$_COOKIE[session_ID]';";
+               $result = mysqli_query($conn, $session_query);
+               if($result){
+                  $retrieve_query = 
+                  "SELECT *
+                  FROM users_info
+                  JOIN users_program ON users_info.student_ID = users_program.student_ID
+                  JOIN users_avatar ON users_info.student_ID = users_avatar.student_ID
+                  JOIN users_address ON users_info.student_ID = users_address.student_ID
+                  WHERE users_info.student_ID = ". mysqli_fetch_assoc($result)["student_ID"] .";";
+                  $user_details = mysqli_query($conn, $retrieve_query);
+                  if (mysqli_num_rows($user_details) > 0) {
+                     $row = mysqli_fetch_assoc($user_details);
+                     $_SESSION["user"] = array(
+                        "student_ID" => $row["student_ID"],
+                        "student_email" => $row["student_email"],
+                        "first_name" => $row["first_name"],
+                        "last_name" => $row["last_name"],
+                        "DOB" => $row["DOB"],
+                        "program" => $row["Program"],
+                        "street_num" => $row["street_number"],
+                        "street_name" => $row["street_name"],
+                        "city" => $row["city"],
+                        "provence" => $row["provence"],
+                        "postal_code" => $row["postal_code"],
+                        "avatar" => $row["avatar"]
+                     );
+                  }
+               }
+               if(isset($_SESSION["user"])){
+                  $student_ID = $_SESSION['user']['student_ID'];
+                  $text = mysqli_real_escape_string($conn, $_POST['text']);
+                  $postQuery = "INSERT INTO users_posts(student_ID, new_post) VALUES ('$student_ID', '$text');";
+                  if(mysqli_query($conn, $postQuery)){
+                     $postQuery = "SELECT post_ID, new_post FROM users_posts WHERE student_ID='$student_ID' ORDER BY post_date LIMIT 5";
+                     $posts = mysqli_query($conn, $postQuery);
+                     if(mysqli_num_rows($posts) > 0){
+                        foreach($posts as $post){
+                           echo
+                           "<div class='postDiv'> <!-- Replace with Tables if time permits -->
+                           <details open>
+                              <Summary>Post ". $post["post_ID"] ."</Summary>
+                              ". $post["new_post"] ."
+                           </details>
+                        </div>";
+                        }
+                     }
+                  }else{
+                     echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
+                  }
+               }
+               $conn->close();
+            }
+         }
+      ?>
    </head>
    <body>
       <header>
@@ -45,41 +114,12 @@
                               <td colspan="2"><textarea rows="4" cols="45" maxlength="500" placeholder="What's on your mind? (max 500 char)" name="text"></textarea></td>
                            </tr>
                            <tr>
-                              <td><button type="submit" name="submit" method="post" formaction=''>Post</button></td>
+                              <td><button type="submit" name="post_submit" value="post_submit" method="post" formaction=''>Post</button></td>
                               <td><button type="reset" formaction="reset.css">Reset</button></td>
                            </tr>
                         </table>
                      </fieldset>
                   </form>
-                  <?php
-                  if(isset($_POST["submit"])){
-                     include("connection.php");
-
-                     define("DATABASE_LOCAL", "localhost");
-                     define("DATABASE_NAME", "joshua_gatto_syscbook");
-                     define("DATABASE_USER", "root");
-                     define("DATABASE_PASSWD", "");
-
-                     $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
-                     if ($conn->connect_error) {
-                        echo "Error";
-                        die("Connection failed: " . $conn->connect_error);
-                     }else{
-                        if(isset($_SESSION["user"])){
-                           $student_ID = $_SESSION["user"]["student_ID"];
-                           echo $student_ID;
-                           $text = mysqli_real_escape_string($conn, $_POST['text']);
-                           $postQuery = "INSERT INTO users_posts(student_ID, new_post) VALUES ('', '$text');";
-                           if(mysqli_query($conn, $postQuery)){
-                                 //print results
-                           }else{
-                              echo 'Error persisting user data, Error Code 1' . $conn->connect_error;
-                           }
-                        }
-                        $conn->close();
-                     }
-                  }
-                  ?>
                </td>
             </tr>
             <tr class="posts">

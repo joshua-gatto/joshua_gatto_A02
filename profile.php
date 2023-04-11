@@ -62,6 +62,12 @@
                         "postal_code" => $postal_code,
                         "avatar" => $avatar,
                      );
+                     $session_ID = uniqid();
+                     setcookie('session_ID', $session_ID, time() + 3600);
+                     $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
+                     if(mysqli_query($conn, $session_query) === TRUE){}else{
+                        echo "Error persisting user data, Error Code 0". $conn->connection_error;
+                     }
                   }else{
                      echo "Error persisting user data, Error Code 1" . $conn->connect_error;
                   }
@@ -117,6 +123,12 @@
                         "postal_code" => NULL,
                         "avatar" => NULL,
                      );
+                     $session_ID = uniqid();
+                     setcookie('session_ID', $session_ID, time() + 3600);
+                     $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
+                     if(mysqli_query($conn, $session_query) === TRUE){}else{
+                        echo "Error persisting user data, Error Code 0". $conn->connection_error;
+                     }
                   }else{
                      echo "Error persisting user data, Error Code 1" . $conn->connect_error;
                   }
@@ -125,9 +137,50 @@
             }
          $conn->close();
          }
-      }else{
-         echo "Error loading user data";
+      }elseif(isset($_COOKIE["session_ID"])){
+         include("connection.php");
+
+         define("DATABASE_LOCAL", "localhost");
+         define("DATABASE_NAME", "joshua_gatto_syscbook");
+         define("DATABASE_USER", "root");
+         define("DATABASE_PASSWD", "");
+
+         $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
+         if ($conn->connect_error) {
+            echo "Error";
+            die("Connection failed: " . $conn->connect_error);
+         }else{
+         $session_query = "SELECT student_ID, session_ID FROM users_session WHERE session_ID='$_COOKIE[session_ID]';";
+         if(mysqli_query($conn, $session_query) === TRUE){
+            $retrieve_query = "SELECT ui.student_ID
+            FROM users_info ui
+            JOIN users_program up ON ui.student_ID = up.student_ID
+            JOIN users_avatar ua ON ui.student_ID = ua.student_ID
+            JOIN users_address uadd ON ui.student_ID = uadd.student_ID
+            JOIN users_posts upo ON ui.student_ID = upo.student_ID;";
+            $user_details = mysqli_query($conn, $retrieve_query);
+            if (mysqli_num_rows($user_details) > 0) {
+               $row = mysqli_fetch_assoc($user_details);
+               $_SESSION["user"] = array(
+                  "student_ID" => $row["student_ID"],
+                  "student_email" => $row["student_email"],
+                  "first_name" => $row["first_name"],
+                  "last_name" => $row["last_name"],
+                  "DOB" => $row["DOB"],
+                  "program" => $row["Program"],
+                  "street_num" => $row["street_number"],
+                  "street_name" => $row["street_name"],
+                  "city" => $row["city"],
+                  "provence" => $row["provence"],
+                  "postal_code" => $row["postal_code"],
+                  "avatar" => $row["avatar"]
+               );
+            }
+         }
       }
+   }else{
+      echo "Error loading user data";
+   }
    ?>
 </head>
 <body>

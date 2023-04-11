@@ -1,7 +1,6 @@
 <?php
-if(isset($_SESSION["user"])){
-    unset($_SESSION["user"]);
-    session_destroy();
+if(isset($_COOKIE["session_ID"])){
+    unset($_COOKIE["session_ID"]);
     include("index.php");
 }else{
     include("profile.php");
