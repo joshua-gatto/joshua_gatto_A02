@@ -7,177 +7,74 @@
    <link rel="stylesheet" href="assets/css/style.css" />
    <?php
       session_start();
-      if(isset($_POST["profile_submit"])){
-         include("connection.php");
-
-         define("DATABASE_LOCAL", "localhost");
-         define("DATABASE_NAME", "joshua_gatto_syscbook");
-         define("DATABASE_USER", "root");
-         define("DATABASE_PASSWD", "");
-
-         $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
-         if ($conn->connect_error) {
-            echo "Error";
-            die("Connection failed: " . $conn->connect_error);
-         }else{
-            //personal information
-            $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
-            $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
-            $dob = mysqli_real_escape_string($conn, $_POST["DOB"]);
-            //Address
+      if((isset($_POST["profile_submit"]) || isset($_POST["register_submit"])) && isset($_SESSION["user"])){
+         include_once("connection.php");
+         //common user data
+         $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
+         $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
+         $dob = mysqli_real_escape_string($conn, $_POST["DOB"]);
+         $email = mysqli_real_escape_string($conn, $_POST["student_email"]);
+         $program = mysqli_real_escape_string($conn, $_POST["program"]);
+         //profile user data
+         if(isset($_POST["profile_submit"])){
             $street_num = mysqli_real_escape_string($conn, $_POST["street_number"]);
             $street_name = mysqli_real_escape_string($conn, $_POST["street_name"]);
             $city = mysqli_real_escape_string($conn, $_POST["city"]);
             $provence = mysqli_real_escape_string($conn, $_POST["provence"]);
             $postal_code = mysqli_real_escape_string($conn, $_POST["postal_code"]);
-            //Profile Information
-            $email = mysqli_real_escape_string($conn, $_POST["student_email"]);
-            $program = mysqli_real_escape_string($conn, $_POST["program"]);
             $avatar = mysqli_real_escape_string($conn, $_POST["avatar"]);
-            //form first query
-            $infoQuery = "INSERT INTO users_info(student_email, first_name, last_name, DOB) VALUES ('$email', '$first_name', '$last_name', '$dob');";
-            //submit first query
-            if (mysqli_query($conn, $infoQuery) === TRUE) {
-                  //get generated ID
-                  $student_ID = mysqli_insert_id($conn);
-                  //generate remaining queries
-                  $programQuery = "INSERT INTO users_program(student_ID, Program) VALUES ('$student_ID', '$program');";
-                  $addressQuery = "INSERT INTO users_address(student_ID, street_number, street_name, city, provence, postal_code) VALUES ('$student_ID', '$street_num', '$street_name', '$city', '$provence', '$postal_code');";
-                  $avatarQuery = "INSERT INTO users_avatar(student_ID, avatar) VALUES('$student_ID', '$avatar');";
-                  //submit remaining queries
-                  if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
-                     //print results
-                     $_SESSION["user"] = 
-                     array(
-                        "student_ID" => $student_ID,
-                        "student_email" => $email,
-                        "first_name" => $first_name,
-                        "last_name" => $last_name,
-                        "DOB" => $dob,
-                        "program" => $program,
-                        "street_num" => $street_num,
-                        "street_name" => $street_name,
-                        "city" => $city,
-                        "provence" => $provence,
-                        "postal_code" => $postal_code,
-                        "avatar" => $avatar,
-                     );
-                     $session_ID = uniqid();
-                     setcookie('session_ID', $session_ID, time() + 3600);
-                     $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
-                     if(mysqli_query($conn, $session_query) === TRUE){}else{
-                        echo "Error persisting user data, Error Code 0". $conn->connection_error;
-                     }
-                  }else{
-                     echo "Error persisting user data, Error Code 1" . $conn->connect_error;
+         }else{
+            $street_num = 0;
+            $street_name = NULL;
+            $city = NULL;
+            $provence = NULL;
+            $postal_code = NULL;
+            $avatar = NULL;
+         }
+         //form first query
+         $infoQuery = "INSERT INTO users_info(student_email, first_name, last_name, DOB) VALUES ('$email', '$first_name', '$last_name', '$dob');";
+         //submit first query
+         if (mysqli_query($conn, $infoQuery) === TRUE) {
+               //get generated ID
+               $student_ID = mysqli_insert_id($conn);
+               //generate remaining queries
+               $programQuery = "INSERT INTO users_program(student_ID, Program) VALUES ('$student_ID', '$program');";
+               $addressQuery = "INSERT INTO users_address(student_ID, street_number, street_name, city, provence, postal_code) VALUES ('$student_ID', '$street_num', '$street_name', '$city', '$provence', '$postal_code');";
+               $avatarQuery = "INSERT INTO users_avatar(student_ID, avatar) VALUES('$student_ID', '$avatar');";
+               //submit remaining queries
+               if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
+                  //print results
+                  $_SESSION["user"] = 
+                  array(
+                     "student_ID" => $student_ID,
+                     "student_email" => $email,
+                     "first_name" => $first_name,
+                     "last_name" => $last_name,
+                     "DOB" => $dob,
+                     "program" => $program,
+                     "street_num" => $street_num,
+                     "street_name" => $street_name,
+                     "city" => $city,
+                     "provence" => $provence,
+                     "postal_code" => $postal_code,
+                     "avatar" => $avatar,
+                  );
+                  $session_ID = uniqid();
+                  setcookie('session_ID', $session_ID, time() + 3600);
+                  $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
+                  if(mysqli_query($conn, $session_query) === TRUE){}else{
+                     echo "Error persisting user data, Error Code 0". $conn->connection_error;
                   }
-            }else{
-                  echo "Error persisting user data, Error Code 2" . $conn->connect_error;
-            }
+               }else{
+                  echo "Error persisting user data, Error Code 1" . $conn->connect_error;
+               }
+         }else{
+               echo "Error persisting user data, Error Code 2" . $conn->connect_error;
          }
          $conn->close();
-      }elseif(isset($_POST["register_submit"])){
-         include("connection.php");
-
-         define("DATABASE_LOCAL", "localhost");
-         define("DATABASE_NAME", "joshua_gatto_syscbook");
-         define("DATABASE_USER", "root");
-         define("DATABASE_PASSWD", "");
-
-         $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
-         if ($conn->connect_error) {
-            echo "Error";
-            die("Connection failed: " . $conn->connect_error);
-         }else{
-            //collect data from user input
-            $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
-            $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
-            $dob = mysqli_real_escape_string($conn, $_POST["DOB"]);
-            $email = mysqli_real_escape_string($conn, $_POST["student_email"]);
-            $program = mysqli_real_escape_string($conn, $_POST["program"]);
-            //form first query
-            $infoQuery = "INSERT INTO users_info(student_email, first_name, last_name, DOB) VALUES ('$email', '$first_name', '$last_name', '$dob');";
-            //submit first query
-            if (mysqli_query($conn, $infoQuery) === TRUE) {
-                  //get generated ID
-                  $student_ID = mysqli_insert_id($conn);
-                  //generate remaining queries
-                  $programQuery = "INSERT INTO users_program(student_ID, Program) VALUES ('$student_ID', '$program');";
-                  $addressQuery = "INSERT INTO users_address(student_ID, street_number, street_name, city, provence, postal_code) VALUES ('$student_ID', 0, NULL, NULL, NULL, NULL);";
-                  $avatarQuery = "INSERT INTO users_avatar(student_ID, avatar) VALUES('$student_ID', NULL);";
-                  //submit remaining queries
-                  if(mysqli_query($conn, $programQuery) === TRUE and mysqli_query($conn, $addressQuery) === TRUE and mysqli_query($conn, $avatarQuery) === TRUE){
-                     //print results
-                     $_SESSION["user"] = 
-                     array(
-                        "student_ID" => $student_ID,
-                        "student_email" => $email,
-                        "first_name" => $first_name,
-                        "last_name" => $last_name,
-                        "DOB" => $dob,
-                        "program" => $program,
-                        "street_num" => 0,
-                        "street_name" => NULL,
-                        "city" => NULL,
-                        "provence" => NULL,
-                        "postal_code" => NULL,
-                        "avatar" => NULL,
-                     );
-                     $session_ID = uniqid();
-                     setcookie('session_ID', $session_ID, time() + 3600);
-                     $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
-                     if(mysqli_query($conn, $session_query) === TRUE){}else{
-                        echo "Error persisting user data, Error Code 0". $conn->connection_error;
-                     }
-                  }else{
-                     echo "Error persisting user data, Error Code 1" . $conn->connect_error;
-                  }
-            }else{
-                  echo "Error persisting user data, Error Code 2" . $conn->connect_error;
-            }
-         $conn->close();
-         }
-      }elseif(isset($_COOKIE["session_ID"])){
-         include("connection.php");
-
-         define("DATABASE_LOCAL", "localhost");
-         define("DATABASE_NAME", "joshua_gatto_syscbook");
-         define("DATABASE_USER", "root");
-         define("DATABASE_PASSWD", "");
-
-         $conn = new mysqli(DATABASE_LOCAL, DATABASE_USER, DATABASE_PASSWD, DATABASE_NAME);
-         if ($conn->connect_error) {
-            echo "Error";
-            die("Connection failed: " . $conn->connect_error);
-         }else{
-         $session_query = "SELECT student_ID, session_ID FROM users_session WHERE session_ID='$_COOKIE[session_ID]';";
-         if(mysqli_query($conn, $session_query) === TRUE){
-            $retrieve_query = "SELECT ui.student_ID
-            FROM users_info ui
-            JOIN users_program up ON ui.student_ID = up.student_ID
-            JOIN users_avatar ua ON ui.student_ID = ua.student_ID
-            JOIN users_address uadd ON ui.student_ID = uadd.student_ID
-            JOIN users_posts upo ON ui.student_ID = upo.student_ID;";
-            $user_details = mysqli_query($conn, $retrieve_query);
-            if (mysqli_num_rows($user_details) > 0) {
-               $row = mysqli_fetch_assoc($user_details);
-               $_SESSION["user"] = array(
-                  "student_ID" => $row["student_ID"],
-                  "student_email" => $row["student_email"],
-                  "first_name" => $row["first_name"],
-                  "last_name" => $row["last_name"],
-                  "DOB" => $row["DOB"],
-                  "program" => $row["Program"],
-                  "street_num" => $row["street_number"],
-                  "street_name" => $row["street_name"],
-                  "city" => $row["city"],
-                  "provence" => $row["provence"],
-                  "postal_code" => $row["postal_code"],
-                  "avatar" => $row["avatar"]
-               );
-            }
-         }
-      }
+      }elseif(isset($_COOKIE["session_ID"]) && !isset($_SESSION["user"])){
+         include_once("connection.php");
+         include_once("restoreSession.php");
    }else{
       echo "Error loading user data";
    }
