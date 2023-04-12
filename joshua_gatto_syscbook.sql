@@ -46,13 +46,13 @@ CREATE TABLE IF NOT EXISTS users_session (
 );
 
 --delete all script
+USE joshua_gatto_syscbook
 SET FOREIGN_KEY_CHECKS = 0;
 
 TRUNCATE TABLE users_program;
 TRUNCATE TABLE users_avatar;
 TRUNCATE TABLE users_address;
 TRUNCATE TABLE users_posts;
-TRUNCATE TABLE users_session;
 TRUNCATE TABLE users_info;
 
 SET FOREIGN_KEY_CHECKS = 1;
