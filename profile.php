@@ -59,12 +59,6 @@
                      "postal_code" => $postal_code,
                      "avatar" => $avatar,
                   );
-                  $session_ID = uniqid();
-                  setcookie('session_ID', $session_ID, time() + 3600);
-                  $session_query = "INSERT INTO users_session(student_ID, session_ID) VALUES ('$student_ID', '$session_ID');";
-                  if(mysqli_query($conn, $session_query) === TRUE){}else{
-                     echo "Error persisting user data, Error Code 0". $conn->connection_error;
-                  }
                }else{
                   echo "Error persisting user data, Error Code 1" . $conn->connect_error;
                }
@@ -72,12 +66,11 @@
                echo "Error persisting user data, Error Code 2" . $conn->connect_error;
          }
          $conn->close();
-      }elseif(isset($_COOKIE["session_ID"]) && !isset($_SESSION["user"])){
-         include_once("connection.php");
-         include_once("restoreSession.php");
-   }else{
-      echo "Error loading user data";
-   }
+      }elseif(!isset($_SESSION["user"])){
+         echo "No user logged in";
+      }else{
+         echo "logged in as ". $_SESSION["user"]["student_ID"] .", ". $_SESSION["user"]["first_name"];
+      }
    ?>
 </head>
 <body>
