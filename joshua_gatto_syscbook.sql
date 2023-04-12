@@ -39,7 +39,14 @@ CREATE TABLE IF NOT EXISTS users_posts (
     FOREIGN KEY (student_ID) REFERENCES users_info(student_ID)
 );
 
+CREATE TABLE IF NOT EXISTS users_session (
+    student_ID INT(10) PRIMARY KEY,
+    session_ID INT,
+    FOREIGN KEY (student_ID) REFERENCES users_info(student_ID)
+);
+
 --delete all script
+USE joshua_gatto_syscbook
 SET FOREIGN_KEY_CHECKS = 0;
 
 TRUNCATE TABLE users_program;
